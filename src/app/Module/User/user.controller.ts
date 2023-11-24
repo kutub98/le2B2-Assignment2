@@ -22,6 +22,25 @@ const storeUserInDB = async (req: Request, res: Response) => {
   }
 }
 
+const getAllUsersFromDb = async (req: Request, res: Response) => {
+  try {
+    const allUsers = await userServices.getAllUsers()
+    res.status(200).json({
+      success: true,
+      message: 'Successfully retrived all users',
+      totalUser: allUsers.length,
+      allUser: allUsers,
+    })
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: 'somethign went wrong',
+      error: err,
+    })
+  }
+}
+
 export const userController = {
   storeUserInDB,
+  getAllUsersFromDb,
 }
