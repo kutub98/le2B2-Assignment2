@@ -8,7 +8,7 @@ app.use(cors())
 
 const router = userRouters
 
-app.use('/api/v1/users', router)
+app.use('/api/', router)
 
 app.get('/', (req: Request, res: Response) => {
   try {

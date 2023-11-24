@@ -5,9 +5,9 @@ import { userServices } from './user.service'
 const storeUserInDB = async (req: Request, res: Response) => {
   try {
     const userData = req.body
-    console.log(userData, 'from controller userdata of req.body')
+    // console.log(userData, 'from controller userdata of req.body')
     const result = await userServices.createUser(userData)
-    console.log(result, 'Result from controller')
+    // console.log(result, 'Result from controller')
     res.status(200).json({
       success: true,
       message: 'Successfully created user',

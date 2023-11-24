@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { IUser } from './user.interface'
 import { UserAddress } from './user.interface'
-
+import bcrypt from 'bcrypt'
+import Config from '../../../Config'
 const UserAddressSchema = new Schema<UserAddress>({
   city: {
     type: String,
@@ -66,6 +67,21 @@ const userSchema = new Schema<IUser>({
   },
   address: UserAddressSchema,
   orders: [userOrderSchema],
+})
+
+userSchema.pre('save', async function (next) {
+  // console.log(this, 'from model')
+  const getPassword = this.password
+  const hasedPassword = await bcrypt.hash(getPassword, Number(Config.DB_URL))
+  this.password = hasedPassword
+  // console.log(hasedPassword)
+  next()
+})
+userSchema.post('save', function (doc, next) {
+  const emptyPassword = ''
+  doc.password = emptyPassword
+  console.log(emptyPassword, 'from model empty password ')
+  next()
 })
 
 export const UserModel = model<IUser>('users', userSchema)

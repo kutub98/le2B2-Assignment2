@@ -10,13 +10,28 @@
     "start": "node src/app/server.ts",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
     "prettierFix": "npx prettier --write src/**/*.ts",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "prepare": "husky install",
+    "prepush": "lint-staged"
+  },
+  "lint-staged":{
+    "**/*.{js,jsx,ts,tsx}":[
+      "npx prettier --write",
+      "npx eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run prepush"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/mongoose": "^5.11.97",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -30,6 +45,8 @@
     "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
