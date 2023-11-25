@@ -31,5 +31,5 @@ export interface IUser {
   isActive: boolean
   hobbies: UserHobbies
   address: UserAddress
-  orders: userOrders
+  orders: userOrders[]
 }
