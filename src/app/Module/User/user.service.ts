@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { userZodSchemaValidation } from './user.Validation'
-import { IUser } from './user.interface'
+import { IUser, userOrders } from './user.interface'
 import { UserModel } from './user.model'
 
 const createUser = async (user: IUser) => {
@@ -63,19 +63,7 @@ const addedAOrder = async (
     },
     { new: true },
   )
-  if (!result) {
-    return {
-      success: false,
-      message: `User with userId ${id} not found.`,
-      data: null,
-    }
-  }
-
-  return {
-    success: true,
-    message: 'Successfully added new order service',
-    data: result,
-  }
+  return result
 }
 
 const getAllOrdesFromSpecificUser = async (id: string) => {
@@ -85,11 +73,10 @@ const getAllOrdesFromSpecificUser = async (id: string) => {
 }
 const getAllTotlaPriceFromSpecificUser = async (id: string) => {
   const user = await UserModel.findOne({ userId: id })
-  const orders: { price: number; quantity: number }[] = user?.orders || [
-    'no orders found',
-  ]
+  const orders: userOrders[] = user?.orders ?? []
+
   const totalPrice = orders.reduce(
-    (acc, order) => acc + order?.price * order.quantity,
+    (acc, order) => acc + order?.price * order?.quantity,
     0,
   )
   return totalPrice

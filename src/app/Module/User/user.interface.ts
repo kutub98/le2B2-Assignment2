@@ -10,13 +10,11 @@ export type UserAddress = {
   country: string
 }
 
-export type userOrders = [
-  {
-    productName: string
-    price: number
-    quantity: number
-  },
-]
+export type userOrders = {
+  productName: string
+  price: number
+  quantity: number
+}
 
 export interface IUser {
   userId: number
@@ -31,5 +29,5 @@ export interface IUser {
   isActive: boolean
   hobbies: UserHobbies
   address: UserAddress
-  orders: userOrders[]
+  orders: [userOrders]
 }
