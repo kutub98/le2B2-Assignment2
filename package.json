@@ -5,17 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startDev": "ts-node-dev --respawn --transpile-only src/app/server.ts",
+    "startDev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "dev": "tsc --watch",
-    "start": "node src/app/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
     "prettierFix": "npx prettier --write src/**/*.ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "prepare": "husky install",
     "prepush": "lint-staged"
   },
-  "lint-staged":{
-    "**/*.{js,jsx,ts,tsx}":[
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
       "npx prettier --write",
       "npx eslint --fix"
     ]

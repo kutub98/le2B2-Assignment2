@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { userZodSchemaValidation } from './user.Validation'
 import { IUser } from './user.interface'
 import { UserModel } from './user.model'
 
 const createUser = async (user: IUser) => {
   const zodParserData = userZodSchemaValidation.parse(user)
-  // console.log(zodParserData, 'from  user service')
   const result = await UserModel.create(zodParserData)
   return result
 }
@@ -20,20 +20,79 @@ const getSingleUser = async (id: string) => {
 }
 
 const UpdatedUserUserID = async (id: string, updateFields: Partial<IUser>) => {
-  const zodParserData = userZodSchemaValidation.parse(updateFields)
-  // console.log('zodParserData', zodParserData)
+  // const zodParserData = userZodSchemaValidation.parse(updateFields)
+  // console.log(id, 'from user services')
 
   const result = await UserModel.findOneAndUpdate(
-    { id: id },
-    { $set: zodParserData },
-    { new: true },
+    { userId: id },
+    updateFields,
+    { new: true, runValidators: true },
+  )
+  console.log(
+    id,
+    updateFields,
+    result,
+    'from user services',
+    'from user service',
   )
   return result
 }
 
-const deleteUser = async (id: string) => {
-  const result = await UserModel.findOne({ userId: id })
+const deleteUser = async (id: any) => {
+  const result = await UserModel.deleteOne({ userId: id })
+  console.log(id, result.deletedCount, 'from server user id')
   return result
+}
+
+const addedAOrder = async (
+  id: string,
+  payload: { productName: string; price: number; quantity: number },
+) => {
+  const orders = {
+    productName: payload.productName,
+    price: payload.price,
+    quantity: payload.quantity,
+  }
+
+  const result = await UserModel.findOneAndUpdate(
+    { userId: id },
+    {
+      $push: {
+        orders: orders,
+      },
+    },
+    { new: true },
+  )
+  if (!result) {
+    return {
+      success: false,
+      message: `User with userId ${id} not found.`,
+      data: null,
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Successfully added new order service',
+    data: result,
+  }
+}
+
+const getAllOrdesFromSpecificUser = async (id: string) => {
+  const user = await UserModel.findOne({ userId: id })
+  const orders = user?.orders || ['no orders found']
+  return orders
+}
+const getAllTotlaPriceFromSpecificUser = async (id: string) => {
+  const user = await UserModel.findOne({ userId: id })
+  const orders: { price: number; quantity: number }[] = user?.orders || [
+    'no orders found',
+  ]
+  const totalPrice = orders.reduce(
+    (acc, order) => acc + order?.price * order.quantity,
+    0,
+  )
+  return totalPrice
 }
 
 // const getUserBySearch = async (searchTerm: string | number | undefined) => {
@@ -54,5 +113,8 @@ export const userServices = {
   getSingleUser,
   UpdatedUserUserID,
   deleteUser,
+  addedAOrder,
+  getAllOrdesFromSpecificUser,
+  getAllTotlaPriceFromSpecificUser,
   // getUserBySearch,
 }

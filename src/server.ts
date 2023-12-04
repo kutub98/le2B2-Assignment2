@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Config from '../Config'
+import Config from './Config'
 import app from './app'
 
 const Le2B2Assignment2 = async () => {
@@ -11,7 +11,8 @@ const Le2B2Assignment2 = async () => {
       console.log(`Application runnig from port no:`, Config.Port)
     })
   } catch (err) {
-    console.log(err)
+    // console.log(err)
+    throw new Error()
   }
 }
 

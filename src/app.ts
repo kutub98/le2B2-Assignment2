@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
-import { userRouters } from './Module/User/user.route'
+import { userRouters } from './app/Module/User/user.route'
 
 const app = express()
 app.use(express.json())
@@ -19,7 +19,8 @@ app.get('/', (req: Request, res: Response) => {
       data: hello,
     })
   } catch (err) {
-    console.log(err)
+    // console.log(err)
+    throw new Error('hello')
   }
 })
 

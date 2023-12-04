@@ -44,7 +44,6 @@ const getSingleUserFromDb = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
     const singleUser = await userServices.getSingleUser(userId)
-    console.log(singleUser)
     res.status(200).json({
       success: true,
       // userName: singleUser?.fullName?.firstName,
@@ -52,7 +51,6 @@ const getSingleUserFromDb = async (req: Request, res: Response) => {
       user: singleUser,
     })
   } catch (err) {
-    console.log(err)
     res.status(400).json({
       success: false,
       message: 'Something went Wrong',
@@ -63,9 +61,9 @@ const getSingleUserFromDb = async (req: Request, res: Response) => {
 
 const updateUserByUserIdfromDb = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
+    const { userId } = req.params
     const { updateFields } = req.body
-    const result = await userServices.UpdatedUserUserID(id, updateFields)
+    const result = await userServices.UpdatedUserUserID(userId, updateFields)
 
     res.status(200).json({
       success: true,
@@ -73,7 +71,6 @@ const updateUserByUserIdfromDb = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error) {
-    console.log(error)
     res.status(400).json({
       success: false,
       message: 'sorry not found',
@@ -84,20 +81,69 @@ const updateUserByUserIdfromDb = async (req: Request, res: Response) => {
 
 const deleteUserFromDB = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const deletUser = await userServices.deleteUser(id)
+    const { userId } = req.params
+    const deletUser = await userServices.deleteUser(userId)
+
     res.status(200).json({
       success: true,
-      message: 'successfully deleted user',
+      message: 'successfully deleted user ',
       data: deletUser,
     })
   } catch (err) {
-    res.status(200).json({
+    res.status(400).json({
       success: true,
       message: 'Sorry not found user',
       error: err,
     })
   }
+}
+
+const addedAOrderToUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params
+    const { productName, price, quantity } = req.body
+    const result = await userServices.addedAOrder(userId, {
+      price,
+      productName,
+      quantity,
+    })
+    res.status(200).json({
+      success: true,
+      message: 'Successfully added new order from controller',
+      data: result,
+    })
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: 'something went wrong',
+      error: err,
+    })
+  }
+}
+
+const getAllOrdesFromSpecificUserFromDb = async (
+  req: Request,
+  res: Response,
+) => {
+  const { userId } = req.params
+  const result = await userServices.getAllOrdesFromSpecificUser(userId)
+  res.status(200).json({
+    success: true,
+    message: `Total Orders ${result.length}`,
+    order: result,
+  })
+}
+const getAllTotlaPriceFromSpecificUser = async (
+  req: Request,
+  res: Response,
+) => {
+  const { userId } = req.params
+  const result = await userServices.getAllTotlaPriceFromSpecificUser(userId)
+  res.status(200).json({
+    success: true,
+    message: `Total prices price calculated successfully` || 'No orderd',
+    totalPrice: result || 'no order',
+  })
 }
 
 // const getUserfromDBBySearch = async (req: Request, res: Response) => {
@@ -124,5 +170,8 @@ export const userController = {
   getSingleUserFromDb,
   updateUserByUserIdfromDb,
   deleteUserFromDB,
+  getAllOrdesFromSpecificUserFromDb,
+  addedAOrderToUser,
+  getAllTotlaPriceFromSpecificUser,
   // getUserfromDBBySearch,
 }
