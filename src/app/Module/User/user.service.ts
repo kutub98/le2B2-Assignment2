@@ -46,7 +46,7 @@ const deleteUser = async (id: any) => {
 
 const addedAOrder = async (
   id: string,
-  payload: { productName: string; price: number; quantity: number },
+  payload: { productName: 'string'; price: number; quantity: number },
 ) => {
   const orders = {
     productName: payload.productName,
@@ -58,10 +58,10 @@ const addedAOrder = async (
     { userId: id },
     {
       $push: {
-        orders: orders,
+        orders: { $each: orders },
       },
     },
-    { new: true },
+    { new: true, runValidators: true },
   )
   return result
 }

@@ -62,8 +62,8 @@ const userSchema = new Schema<IUser>({
     required: [true, 'Provide activity'],
   },
   hobbies: {
-    type: String,
-    enum: ['Traveling', 'Adda', 'Reading Book', 'Playing Cricket'],
+    type: [String],
+    required: [true, 'Hobies reuired'],
   },
   address: UserAddressSchema,
   orders: [userOrderSchema],

@@ -1,8 +1,6 @@
-export type UserHobbies =
-  | 'Traveling'
-  | 'Adda'
-  | 'Reading Book'
-  | 'Playing Cricket'
+export type UserHobbies<T> = {
+  hobbies: T
+}
 
 export type UserAddress = {
   street: string
@@ -27,7 +25,7 @@ export interface IUser {
   age: number
   email: string
   isActive: boolean
-  hobbies: UserHobbies
+  hobbies: UserHobbies<string>[]
   address: UserAddress
-  orders: [userOrders]
+  orders: userOrders[]
 }

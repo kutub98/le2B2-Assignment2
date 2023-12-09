@@ -5,12 +5,7 @@ const fullZodSchema = z.object({
   lastName: z.string(),
 })
 
-const UserHobbiesZodSchema = z.enum([
-  'Traveling',
-  'Adda',
-  'Reading Book',
-  'Playing Cricket',
-])
+// const UserHobbiesZodSchema = z.array()
 
 const addressZodValidation = z.object({
   city: z.string(),
@@ -34,7 +29,7 @@ export const userZodSchemaValidation = z.object({
   age: z.number(),
   email: z.string().email(),
   isActive: z.boolean().default(true),
-  hobbies: UserHobbiesZodSchema,
+  hobbies: z.string().array(),
   address: addressZodValidation,
   orders: ordersZodValidation,
 })

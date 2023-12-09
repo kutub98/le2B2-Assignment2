@@ -101,12 +101,8 @@ const deleteUserFromDB = async (req: Request, res: Response) => {
 const addedAOrderToUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
-    const { productName, price, quantity } = req.body
-    const result = await userServices.addedAOrder(userId, {
-      price,
-      productName,
-      quantity,
-    })
+    const { orders } = req.body
+    const result = await userServices.addedAOrder(userId, orders)
     res.status(200).json({
       success: true,
       message: 'Successfully added new order from controller',
