@@ -103,6 +103,7 @@ const addedAOrderToUser = async (req: Request, res: Response) => {
     const { userId } = req.params
     const { orders } = req.body
     const result = await userServices.addedAOrder(userId, orders)
+    console.log(userId, orders, 'from user controller')
     res.status(200).json({
       success: true,
       message: 'Successfully added new order from controller',

@@ -11,12 +11,12 @@ router.get(
   '/users/:userId/orders',
   userController.getAllOrdesFromSpecificUserFromDb,
 )
+router.put('/users/:userId/orders', userController.addedAOrderToUser)
 router.get(
   '/users/:userId/orders/total-price',
   userController.getAllTotlaPriceFromSpecificUser,
 )
 router.patch('/users/:userId', userController.updateUserByUserIdfromDb)
-router.put('/users/:userId/orders', userController.addedAOrderToUser)
 router.get('/users', userController.getAllUsersFromDb)
 router.delete('/users/:userId', userController.deleteUserFromDB)
 

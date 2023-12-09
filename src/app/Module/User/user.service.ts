@@ -44,15 +44,22 @@ const deleteUser = async (id: any) => {
   return result
 }
 
-const addedAOrder = async (
-  id: string,
-  payload: { productName: 'string'; price: number; quantity: number },
-) => {
-  const orders = {
-    productName: payload.productName,
-    price: payload.price,
-    quantity: payload.quantity,
+const addedAOrder = async (id: string, payload: Partial<IUser>) => {
+  // const orders = {
+  //   productName: payload.productName,
+  //   price: payload.price,
+  //   quantity: payload.quantity,
+  // }
+  const addOrders = payload.orders || []
+
+  if (!addOrders) {
+    throw new Error('undefind')
   }
+  const orders = addOrders.map((order: userOrders) => ({
+    productName: order.productName,
+    price: order.price,
+    quantity: order.quantity,
+  }))
 
   const result = await UserModel.findOneAndUpdate(
     { userId: id },
@@ -63,6 +70,7 @@ const addedAOrder = async (
     },
     { new: true, runValidators: true },
   )
+  console.log('userId', id, result, 'from user add a order user service')
   return result
 }
 
